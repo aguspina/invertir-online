@@ -1,19 +1,13 @@
-# Binance
+# Invertir Online Wrapper for Ruby
 
-[![Gem Version](https://badge.fury.io/rb/binance.svg)](https://badge.fury.io/rb/binance) 
-
-This is an unofficial Ruby wrapper for the Binance exchange REST and WebSocket APIs.
-
-##### Notice
-
-We are now at 1.0 and there are breaking changes, mainly with some method names and the casing of keys. Be sure to check out the code while I work on better documentation.
+This is an unofficial Ruby wrapper for the Invertir Online stock exchange REST API.
 
 ## Installation
 
 Add this line to your application's Gemfile:
 
 ```ruby
-gem 'binance'
+gem 'invertir-online'
 ```
 
 And then execute:
@@ -22,158 +16,56 @@ And then execute:
 
 Or install it yourself as:
 
-    $ gem install binance
-    
+    $ gem install invertir-online
+
 ## Features
 
 #### Current
 
 * Basic implementation of REST API
   * Easy to use authentication
+  * No need to generate auth token
   * Methods return parsed JSON
   * No need to generate timestamps
   * No need to generate signatures
-* Basic implementation of WebSocket API
-  * Pass procs or lambdas to event handlers
-  * Single and multiple streams supported
-  * Runs on EventMachine
-
-#### Planned
-
-* Exception handling with responses
-* High level abstraction
 
 ## Getting Started
 
 #### REST Client
 
-Require Binance:
+Require Invertir Online:
 
 ```ruby
-require 'binance'
+require 'invertir-online'
 ```
 
-Create a new instance of the [REST Client](http://www.rubydoc.info/gems/binance):
+Create a new instance of the [REST Client](http://www.rubydoc.info/gems/invertir-online):
 
 ```ruby
 # If you only plan on touching public API endpoints, you can forgo any arguments
-client = Binance::Client::REST.new
-# Otherwise provide an api_key and secret_key as keyword arguments
-client = Binance::Client::REST.new api_key: 'x', secret_key: 'y'
+client = InvertirOnline::Client::REST.new
+# Otherwise provide username and passowrd
+client = InvertirOnline::Client::REST.new username: 'x', password: 'y'
 ```
 
 Create various requests:
 
 ```ruby
-# Ping the server
-client.ping # => {}
+# Get account_info data
+client.account_info
+# => {"cuentas"=>[{"numero"=>"9999", "tipo"=>"inversion_Argentina_Pesos", "moneda"=>"peso_Argentino", "disponible"=>0.0, "comprometido"=>0.0, "saldo"=>0.0, #"titulosValorizados"=>0.0, "total"=>0.0, "margenDescubierto"=>0.0, "saldos"=>[{"liquidacion"=>"inmediato", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"hrs24", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"hrs48", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"hrs72", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"masHrs72", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}], "estado"=>"operable"}, {"numero"=>"9999", "tipo"=>"inversion_Argentina_Dolares", "moneda"=>"dolar_Estadounidense", "disponible"=>0.0, "comprometido"=>0.0, "saldo"=>0.0, "titulosValorizados"=>0.0, "total"=>0.0, "margenDescubierto"=>0.0, "saldos"=>[{"liquidacion"=>"inmediato", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"hrs24", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"hrs48", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"hrs72", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}, {"liquidacion"=>"masHrs72", "saldo"=>0.0, "comprometido"=>0.0, "disponible"=>0.0, "disponibleOperar"=>0.0}], "estado"=>"operable"}], "estadisticas"=>[{"descripcion"=>"Anterior", "cantidad"=>0, "volumen"=>0.0}, {"descripcion"=>"Actual", "cantidad"=>0, "volumen"=>0.0}], "totalEnPesos"=>0.0}
 
-# Get kline data
-client.klines symbol: 'NEOETH', interval: '1m', limit: 1
-# => [[1511682480000, "0.08230000", "0.08230000", "0.08230000", "0.08230000", "0.00000000", 
-# 1511682539999, "0.00000000", 0, "0.00000000", "0.00000000", "2885926.46000000"]]
-
-# Create an order
-client.create_order! symbol: 'XRPETH', side: 'BUY', type: 'LIMIT', 
-  time_in_force: 'GTC', quantity: '100.00000000', price: '0.00055000'
-# => {"symbol"=>"XRPETH", "orderId"=>918248, "clientOrderId"=>"kmUU0i6cMWzq1NElE6ZTdu", 
-# "transactTime"=>1511685028420, "price"=>"0.00055000", "origQty"=>"100.00000000", 
-# "executedQty"=>"100.00000000", "status"=>"FILLED", "timeInForce"=>"GTC", "type"=>"LIMIT", 
-# "side"=>"BUY"}
-
-# Get deposit address
-client.deposit_address asset: 'NEO'
-# => {"address"=>"AHXeTWYv8qZQhQ2WNrBza9LHyzdZtFnbaT", "success"=>true, "addressTag"=>"", "asset"=>"NEO"}
+#Get current price for a symbol
+client.price(mercado: 'bcba', simbolo: 'tsla')
+{"ultimoPrecio"=>8844.5, "variacion"=>0.47, "apertura"=>8840.0, "maximo"=>9015.0, "minimo"=>8750.0, "fechaHora"=>"2021-02-05T17:00:05.553", "tendencia"=>"mantiene", "cierreAnterior"=>8844.5, "montoOperado"=>82287964.0, "volumenNominal"=>0, "precioPromedio"=>0.0, "moneda"=>"peso_Argentino", "precioAjuste"=>0.0, "interesesAbiertos"=>0.0, "puntas"=>[{"cantidadCompra"=>1.0, "precioCompra"=>8800.0, "precioVenta"=>9100.0, "cantidadVenta"=>15.0}, {"cantidadCompra"=>7.0, "precioCompra"=>8600.0, "precioVenta"=>9150.0, "cantidadVenta"=>18.0}, {"cantidadCompra"=>1.0, "precioCompra"=>8598.0, "precioVenta"=>9159.0, "cantidadVenta"=>19.0}, {"cantidadCompra"=>1.0, "precioCompra"=>8500.0, "precioVenta"=>9400.0, "cantidadVenta"=>3.0}, {"cantidadCompra"=>14.0, "precioCompra"=>8430.0, "precioVenta"=>9450.0, "cantidadVenta"=>10.0}], "cantidadOperaciones"=>1028}
 ```
-
-Required and optional parameters, as well as enum values, can currently be found on the [Binance GitHub Page](https://github.com/binance-exchange/binance-official-api-docs). Parameters should always be passed to client methods as keyword arguments in snake_case form.
-
-#### WebSocket Client
-
-Require Binance and [EventMachine](https://github.com/eventmachine/eventmachine):
-
-```ruby
-require 'binance'
-require 'eventmachine'
-```
-
-Create a new instance of the [WebSocket Client](http://www.rubydoc.info/gems/binance):
-
-```ruby
-client = Binance::Client::WebSocket.new
-```
-
-Create various WebSocket streams, wrapping calls inside `EM.run`:
-
-```ruby
-EM.run do
-  # Create event handlers
-  open    = proc { puts 'connected' }
-  message = proc { |e| puts e.data }
-  error   = proc { |e| puts e }
-  close   = proc { puts 'closed' }
-
-  # Bundle our event handlers into Hash
-  methods = { open: open, message: message, error: error, close: close }
-
-  # Pass a symbol and event handler Hash to connect and process events
-  client.agg_trade symbol: 'XRPETH', methods: methods
-  
-  # kline takes an additional named parameter
-  client.kline symbol: 'XRPETH', interval: '1m', methods: methods
-
-  # As well as partial_book_depth
-  client.partial_book_depth symbol: 'XRPETH', level: '5', methods: methods
-
-  # Create a custom stream
-  client.single stream: { type: 'aggTrade', symbol: 'XRPETH'}, methods: methods
-
-  # Create multiple streams in one call
-  client.multi streams: [{ type: 'aggTrade', symbol: 'XRPETH' },
-                         { type: 'ticker', symbol: 'XRPETH' },
-                         { type: 'kline', symbol: 'XRPETH', interval: '1m'},
-                         { type: 'depth', symbol: 'XRPETH', level: '5'}],
-               methods: methods 
-end
-```
-
-#### User Data Stream
-
-User data streams utilize both the REST and WebSocket APIs.
-
-Require Binance and [EventMachine](https://github.com/eventmachine/eventmachine):
-
-```ruby
-require 'binance'
-require 'eventmachine'
-```
-
-Create a new instance of the [REST Client](http://www.rubydoc.info/gems/binance) and [WebSocket Client](http://www.rubydoc.info/gems/binance):
-
-```ruby
-rest  = Binance::Client::REST.new api_key: 'x'
-ws    = Binance::Client::WebSocket.new
-```
-
-Request a listen key from the REST API, and then create a WebSocket stream using it.
-
-```ruby
-listen_key = rest.listen_key['listenKey']
-
-message = proc { |e| puts e.data }
-
-EM.run do
-  ws.user_data listen_key: listen_key, methods: {message: message}
-end
-```
-
 ## Development
 
 After checking out the repo, run `bin/setup` to install dependencies. Then, run `rake spec` to run the tests. You can also run `bin/console` for an interactive prompt that will allow you to experiment.
 
 ## Contributing
 
-Bug reports and pull requests are welcome on GitHub at https://github.com/craysiii/binance.
+Bug reports and pull requests are welcome on GitHub at https://github.com/aguspina/invertir-online.
 
 ## License
 

@@ -1,6 +1,6 @@
 require 'date'
 
-module Binance
+module InvertirOnline
   module Client
     class REST
       # Generate a timestamp in milliseconds and append to query string

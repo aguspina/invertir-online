@@ -1,4 +1,4 @@
-module Binance
+module InvertirOnline
   module Client
     class REST
       # Sign the query string using HMAC(sha-256) and appends to query string

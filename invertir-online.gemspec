@@ -1,15 +1,15 @@
 lib = File.expand_path('lib', __dir__)
 $LOAD_PATH.unshift(lib) unless $LOAD_PATH.include?(lib)
-require 'binance/version'
+require 'invertir-online/version'
 
 Gem::Specification.new do |spec|
-  spec.name          = 'binance'
-  spec.version       = Binance::VERSION
-  spec.authors       = ['Charles Ray Shisler III']
-  spec.email         = ['charles@cray.io']
+  spec.name          = 'invertir-online'
+  spec.version       = InvertirOnline::VERSION
+  spec.authors       = ['Agustin Pina']
+  spec.email         = ['aguspina87@gmail.com']
 
-  spec.summary       = 'API Wrapper for the Binance cryptocurrency exchange.'
-  spec.homepage      = 'https://github.com/craysiii/binance'
+  spec.summary       = 'API Wrapper for the Invertir Online stock exchange.'
+  spec.homepage      = 'https://github.com/aguspina/invertir-online'
   spec.license       = 'MIT'
 
   spec.files         = Dir['bin/*'] +
@@ -19,7 +19,7 @@ Gem::Specification.new do |spec|
 
   spec.bindir        = 'bin'
 
-  spec.add_development_dependency 'bundler', '~> 1.15'
+  spec.add_development_dependency 'bundler', '~> 2.2'
   spec.add_development_dependency 'rake', '~> 10.0'
   spec.add_development_dependency 'rspec', '~> 3.0'
 
