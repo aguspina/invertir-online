@@ -18,6 +18,9 @@ module InvertirOnline
         # #price
         { name: :price, client: :signed,
           action: :get, endpoint: :price },
+        {
+          name: :klines, client: :signed,
+          action: :get, endpoint: :klines }
       ].freeze
     end
   end

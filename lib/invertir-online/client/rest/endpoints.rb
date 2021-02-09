@@ -8,7 +8,8 @@ module InvertirOnline
         sell_order:       'v2/operar/Vender',
         all_orders:       'v2/operaciones',
         account_info:     'v2/estadocuenta',
-        price:            'v2/mercado/titulos/simbolo/cotizacion'
+        price:            'v2/mercado/titulos/simbolo/cotizacion',
+        klines:           'v2/mercado/titulos/simbolo/cotizacion/seriehistorica/fecha_desde/fecha_hasta/ajustada'
       }.freeze
     end
   end

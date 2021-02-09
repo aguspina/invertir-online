@@ -26,4 +26,5 @@ Gem::Specification.new do |spec|
   spec.add_runtime_dependency 'faraday', '~> 0.12'
   spec.add_runtime_dependency 'faraday_middleware', '~> 0.12'
   spec.add_runtime_dependency 'faye-websocket', '~> 0.10'
+  spec.add_runtime_dependency 'activesupport', '~> 6.0'
 end

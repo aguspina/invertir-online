@@ -21,11 +21,11 @@ module InvertirOnline
       end
 
       METHODS.each do |method|
-        define_method(method[:name]) do |options = {}|
+        define_method(method[:name]) do |path_options = {}, query_options = {}|
           response = @clients[method[:client]].send(method[:action]) do |req|
-            endpoint = replace_path_variables(ENDPOINTS[method[:endpoint]], options)
+            endpoint = replace_path_variables(ENDPOINTS[method[:endpoint]], path_options)
             req.url endpoint
-            req.params.merge! options.map { |k, v| [camelize(k.to_s), v] }.to_h
+            req.params.merge! query_options.map { |k, v| [camelize(k.to_s), v] }.to_h
           end
           response.body
         end
